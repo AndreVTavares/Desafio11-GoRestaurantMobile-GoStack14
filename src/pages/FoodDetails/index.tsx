@@ -121,10 +121,12 @@ const FoodDetails: React.FC = () => {
 
   function handleIncrementFood(): void {
     // Increment food quantity
+    setFoodQuantity(foodQuantity + 1);
   }
 
   function handleDecrementFood(): void {
     // Decrement food quantity
+    if (foodQuantity > 0) setFoodQuantity(foodQuantity - 1);
   }
 
   const toggleFavorite = useCallback(() => {
@@ -133,6 +135,14 @@ const FoodDetails: React.FC = () => {
 
   const cartTotal = useMemo(() => {
     // Calculate cartTotal
+    const foodTotal = food.price * foodQuantity;
+    let extrasTotal = 0;
+
+    extras.forEach(extra => {
+      extrasTotal += extra.value * extra.quantity;
+    });
+
+    return formatValue(foodTotal + extrasTotal);
   }, [extras, food, foodQuantity]);
 
   async function handleFinishOrder(): Promise<void> {
